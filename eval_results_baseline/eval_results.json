@@ -1,0 +1,168 @@
+{
+  "total": 10,
+  "correct": 3,
+  "syntax_errors": 2,
+  "wrong_results": 5,
+  "details": [
+    {
+      "question": "What are the top 5 best-selling genres by total sales?",
+      "status": "correct",
+      "generated_sql": "SELECT T1.Name, SUM(T3.UnitPrice * T3.Quantity) AS TotalSales FROM Genre AS T1 INNER JOIN Track AS T2 ON T1.GenreId = T2.GenreId INNER JOIN InvoiceLine AS T3 ON T2.TrackId = T3.TrackId GROUP BY T1.Name ORDER BY TotalSales DESC LIMIT 5"
+    },
+    {
+      "question": "How many customers does each country have?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT COUNT(CustomerId) ,  Country FROM Customer GROUP BY Country",
+      "expected": [
+        {
+          "Country": "USA",
+          "CustomerCount": 13
+        },
+        {
+          "Country": "Canada",
+          "CustomerCount": 8
+        },
+        {
+          "Country": "France",
+          "CustomerCount": 5
+        }
+      ],
+      "actual": [
+        {
+          "COUNT(CustomerId)": 1,
+          "Country": "Argentina"
+        },
+        {
+          "COUNT(CustomerId)": 1,
+          "Country": "Australia"
+        },
+        {
+          "COUNT(CustomerId)": 1,
+          "Country": "Austria"
+        }
+      ]
+    },
+    {
+      "question": "Which employee has the most customers assigned to them?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT T1.FirstName, T1.LastName, COUNT(T2.CustomerId) FROM Employee AS T1 INNER JOIN Customer AS T2 ON T1.EmployeeId = T2.SupportRepId GROUP BY T1.EmployeeId, T1.FirstName, T1.LastName ORDER BY COUNT(T2.CustomerId) DESC LIMIT 1",
+      "expected": [
+        {
+          "EmployeeName": "Jane Peacock",
+          "CustomerCount": 21
+        }
+      ],
+      "actual": [
+        {
+          "FirstName": "Jane",
+          "LastName": "Peacock",
+          "COUNT(T2.CustomerId)": 21
+        }
+      ]
+    },
+    {
+      "question": "What is the average invoice total for each country?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT AVG(T1.Total) ,  T2.Country FROM Invoice AS T1 INNER JOIN Customer AS T2 ON T1.CustomerId = T2.CustomerId GROUP BY T2.Country",
+      "expected": [
+        {
+          "BillingCountry": "Chile",
+          "AverageInvoiceTotal": 6.659999999999999
+        },
+        {
+          "BillingCountry": "Ireland",
+          "AverageInvoiceTotal": 6.517142857142857
+        },
+        {
+          "BillingCountry": "Hungary",
+          "AverageInvoiceTotal": 6.517142857142857
+        }
+      ],
+      "actual": [
+        {
+          "AVG(T1.Total)": 5.374285714285714,
+          "Country": "Argentina"
+        },
+        {
+          "AVG(T1.Total)": 5.374285714285714,
+          "Country": "Australia"
+        },
+        {
+          "AVG(T1.Total)": 6.088571428571428,
+          "Country": "Austria"
+        }
+      ]
+    },
+    {
+      "question": "List all albums by the artist 'AC/DC'",
+      "status": "correct",
+      "generated_sql": "SELECT T1.Title FROM Album AS T1 INNER JOIN Artist AS T2 ON T1.ArtistId = T2.ArtistId WHERE T2.Name = 'AC/DC'"
+    },
+    {
+      "question": "What are the names and email addresses of customers from Brazil?",
+      "status": "correct",
+      "generated_sql": "SELECT FirstName, LastName, Email FROM Customer WHERE Country = 'Brazil'"
+    },
+    {
+      "question": "How many tracks are there in each playlist?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT T1.Name, COUNT(T2.TrackId) FROM Playlist AS T1 INNER JOIN PlaylistTrack AS T2 ON T1.PlaylistId = T2.PlaylistId GROUP BY T1.Name",
+      "expected": [
+        {
+          "Name": "Music",
+          "TrackCount": 3290
+        },
+        {
+          "Name": "Music",
+          "TrackCount": 3290
+        },
+        {
+          "Name": "90\u2019s Music",
+          "TrackCount": 1477
+        }
+      ],
+      "actual": [
+        {
+          "Name": "90\u2019s Music",
+          "COUNT(T2.TrackId)": 1477
+        },
+        {
+          "Name": "Brazilian Music",
+          "COUNT(T2.TrackId)": 39
+        },
+        {
+          "Name": "Classical",
+          "COUNT(T2.TrackId)": 75
+        }
+      ]
+    },
+    {
+      "question": "What is the total revenue generated in the year 2021?",
+      "status": "syntax_error",
+      "generated_sql": "SELECT SUM(T2.UnitPrice * T3.Quantity) AS TotalRevenue FROM Invoice AS T1 INNER JOIN InvoiceLine AS T2 ON T1.InvoiceId = T2.InvoiceId INNER JOIN `Order` AS T3 ON T1.OrderId = T3.OrderId WHERE YEAR(T1.InvoiceDate) = 2021",
+      "error": "Error executing query: no such table: Order"
+    },
+    {
+      "question": "Which 5 tracks have the longest duration?",
+      "status": "syntax_error",
+      "generated_sql": "SELECT TOP 5 Name, Milliseconds FROM Track ORDER BY Milliseconds DESC",
+      "error": "Error executing query: near \"5\": syntax error"
+    },
+    {
+      "question": "What is the most popular media type based on number of tracks?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT T1.Name FROM MediaType AS T1 INNER JOIN Track AS T2 ON T1.MediaTypeId = T2.MediaTypeId GROUP BY T1.Name ORDER BY COUNT(T2.TrackId) DESC LIMIT 1",
+      "expected": [
+        {
+          "Name": "MPEG audio file",
+          "TrackCount": 3034
+        }
+      ],
+      "actual": [
+        {
+          "Name": "MPEG audio file"
+        }
+      ]
+    }
+  ]
+}

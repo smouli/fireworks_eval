@@ -1,0 +1,216 @@
+{
+  "total": 10,
+  "correct": 8,
+  "syntax_errors": 1,
+  "wrong_results": 1,
+  "total_score": 8.735555555555555,
+  "average_score": 0.8735555555555555,
+  "details": [
+    {
+      "question": "What are the top 5 best-selling genres by total sales?",
+      "status": "correct",
+      "generated_sql": "SELECT g.Name, SUM(il.UnitPrice * il.Quantity) as TotalSales FROM Genre g JOIN Track t ON g.GenreId = t.GenreId JOIN InvoiceLine il ON t.TrackId = il.TrackId GROUP BY g.Name ORDER BY TotalSales DESC LIMIT 5",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 5,
+          "total_expected_rows": 5,
+          "order_matters": true
+        }
+      }
+    },
+    {
+      "question": "How many customers does each country have?",
+      "status": "correct",
+      "generated_sql": "SELECT Country, COUNT(*) as CustomerCount FROM Customer GROUP BY Country ORDER BY CustomerCount DESC",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 24,
+          "total_expected_rows": 24,
+          "order_matters": false
+        }
+      }
+    },
+    {
+      "question": "Which employee has the most customers assigned to them?",
+      "status": "syntax_error",
+      "generated_sql": "SELECT e.FirstName, e.LastName, COUNT(i.CustomerId) as CustomerCount FROM Employee e LEFT JOIN Customer c ON e.EmployeeId = c.SupportRepId GROUP BY e.EmployeeId ORDER BY CustomerCount DESC LIMIT 1",
+      "error": "Error executing query: no such column: i.CustomerId",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      }
+    },
+    {
+      "question": "What is the average invoice total for each country?",
+      "status": "correct",
+      "generated_sql": "SELECT BillingCountry, AVG(Total) as AverageInvoiceTotal FROM Invoice GROUP BY BillingCountry",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 24,
+          "total_expected_rows": 24,
+          "order_matters": false
+        }
+      }
+    },
+    {
+      "question": "List all albums by the artist 'AC/DC'",
+      "status": "correct",
+      "generated_sql": "SELECT al.Title FROM Album al JOIN Artist ar ON al.ArtistId = ar.ArtistId WHERE ar.Name = 'AC/DC'",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 2,
+          "total_expected_rows": 2,
+          "order_matters": false
+        }
+      }
+    },
+    {
+      "question": "What are the names and email addresses of customers from Brazil?",
+      "status": "correct",
+      "generated_sql": "SELECT FirstName, LastName, Email FROM Customer WHERE Country = 'Brazil'",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 5,
+          "total_expected_rows": 5,
+          "order_matters": false
+        }
+      }
+    },
+    {
+      "question": "How many tracks are there in each playlist?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT p.Name, COUNT(*) as TrackCount FROM Playlist p JOIN PlaylistTrack pt ON p.PlaylistId = pt.PlaylistId JOIN Track t ON pt.TrackId = t.TrackId GROUP BY p.Name ORDER BY TrackCount DESC",
+      "expected": [
+        {
+          "Name": "Music",
+          "TrackCount": 3290
+        },
+        {
+          "Name": "Music",
+          "TrackCount": 3290
+        },
+        {
+          "Name": "90\u2019s Music",
+          "TrackCount": 1477
+        }
+      ],
+      "actual": [
+        {
+          "Name": "Music",
+          "TrackCount": 6580
+        },
+        {
+          "Name": "90\u2019s Music",
+          "TrackCount": 1477
+        },
+        {
+          "Name": "TV Shows",
+          "TrackCount": 426
+        }
+      ],
+      "score": 0.7355555555555555,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.43555555555555553,
+        "total_score": 0.7355555555555555,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 10,
+          "total_expected_rows": 18,
+          "column_match_ratio": 1.0,
+          "order_matters": false
+        }
+      }
+    },
+    {
+      "question": "What is the total revenue generated in the year 2021?",
+      "status": "correct",
+      "generated_sql": "SELECT SUM(il.UnitPrice * il.Quantity) as TotalRevenue FROM InvoiceLine il JOIN Invoice i ON il.InvoiceId = i.InvoiceId WHERE strftime('%Y', i.InvoiceDate) = '2021'",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 1,
+          "total_expected_rows": 1,
+          "order_matters": false
+        }
+      }
+    },
+    {
+      "question": "Which 5 tracks have the longest duration?",
+      "status": "correct",
+      "generated_sql": "SELECT t.Name, t.Milliseconds FROM Track t ORDER BY t.Milliseconds DESC LIMIT 5",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 5,
+          "total_expected_rows": 5,
+          "order_matters": true
+        }
+      }
+    },
+    {
+      "question": "What is the most popular media type based on number of tracks?",
+      "status": "correct",
+      "generated_sql": "SELECT m.Name, COUNT(t.TrackId) as TrackCount FROM MediaType m JOIN Track t ON m.MediaTypeId = t.MediaTypeId GROUP BY m.Name ORDER BY TrackCount DESC LIMIT 1",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 1,
+          "total_expected_rows": 1,
+          "order_matters": true
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "model": "accounts/fireworks/models/qwen-2.5-vl-32b",
+  "prompt_type": "baseline",
+  "total": 10,
+  "correct": 0,
+  "syntax_errors": 0,
+  "wrong_results": 0,
+  "total_score": 0.0,
+  "average_score": 0.0,
+  "metrics": {
+    "total_latency_ms": 0.0,
+    "average_latency_ms": 0.0,
+    "total_cost": 0.0,
+    "average_cost_per_query": 0.0,
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_tokens": 0
+  },
+  "details": [
+    {
+      "question": "What are the top 5 best-selling genres by total sales?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-ac20dc5f8eb845898f0babc17e488e8c', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "How many customers does each country have?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-8ef741c9fcdb4f7eb48342deee2c4a05', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "Which employee has the most customers assigned to them?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-38bee4d350674a68b9ad7c25a81a58ca', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "What is the average invoice total for each country?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-539681db040e49359ee04a088cd88c6c', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "List all albums by the artist 'AC/DC'",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-b6cff697c778491e86d0bdb1fa747f17', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "What are the names and email addresses of customers from Brazil?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-7b15dbc5ca76443eaf904619579b0106', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "How many tracks are there in each playlist?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-6e5955db066441bb9c9538a78ef2d7c5', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "What is the total revenue generated in the year 2021?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-7bcb60774b2547ceac366d469c14b82a', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "Which 5 tracks have the longest duration?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-0abdf42070714a11b617691a752a1d37', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "question": "What is the most popular media type based on number of tracks?",
+      "status": "api_error",
+      "error": "Error code: 404 - {'error': {'code': 'NOT_FOUND', 'message': 'Model not found, inaccessible, and/or not deployed', 'requestId': 'chatcmpl-539a1ea7bc8548a486dfa7a14028140e', 'param': 'model'}}",
+      "score": 0.0,
+      "score_breakdown": {
+        "total_score": 0.0,
+        "syntax_score": 0.0,
+        "result_score": 0.0
+      },
+      "metrics": {
+        "latency_ms": 0.0,
+        "cost": 0.0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    }
+  ]
+}

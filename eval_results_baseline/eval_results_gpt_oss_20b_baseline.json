@@ -1,0 +1,382 @@
+{
+  "model": "accounts/fireworks/models/gpt-oss-20b",
+  "prompt_type": "baseline",
+  "total": 10,
+  "correct": 0,
+  "syntax_errors": 6,
+  "wrong_results": 4,
+  "total_score": 1.4449999999999998,
+  "average_score": 0.1445,
+  "metrics": {
+    "total_latency_ms": 28002.70438194275,
+    "average_latency_ms": 2800.270438194275,
+    "total_ttft_ms": 17152.6095867157,
+    "average_ttft_ms": 1715.2609586715698,
+    "total_cost": 0.00040131000000000005,
+    "average_cost_per_query": 4.0131000000000006e-05,
+    "total_prompt_tokens": 3067,
+    "total_completion_tokens": 2666,
+    "total_tokens": 5733,
+    "average_tokens_per_sec": 210.87600000000003,
+    "average_generation_tokens_per_sec": 232.70800000000003
+  },
+  "details": [
+    {
+      "question": "What are the top 5 best-selling genres by total sales?",
+      "status": "syntax_error",
+      "generated_sql": "**SQL Query**\n\n```sql\n-- Top 5 best\u2011selling genres by total sales\nSELECT\n    g.Name          AS Genre,\n    SUM(il.UnitPrice * il.Quantity) AS TotalSales\nFROM\n    InvoiceLine il\n    JOIN Track t      ON il.TrackId = t.TrackId\n    JOIN Genre g      ON t.GenreId = g.GenreId\nGROUP BY\n    g.GenreId, g.Name\nORDER BY\n    TotalSales DESC\nLIMIT 5;          -- use TOP 5 if you\u2019re on SQL Server\n```\n\nThis query:\n\n1. Joins `InvoiceLine` \u2192 `Track` \u2192 `Genre` to associate each sale with its genre.  \n2. Calculates the revenue for each line (`UnitPrice * Quantity`).  \n3. Aggregates the revenue per genre.  \n4. Orders the results by revenue in descending order and returns the top five.",
+      "error": "Error executing query: near \"*\": syntax error",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 4112.194776535034,
+        "ttft_ms": 1951.0807991027832,
+        "tokens_per_sec": 175.37,
+        "total_tokens_per_sec": 167.31,
+        "cost": 4.816e-05,
+        "prompt_tokens": 309,
+        "completion_tokens": 379,
+        "total_tokens": 688
+      }
+    },
+    {
+      "question": "How many customers does each country have?",
+      "status": "syntax_error",
+      "generated_sql": "**SQL Query**\n\n```sql\nSELECT\n    COALESCE(Country, 'Unknown') AS Country,\n    COUNT(*) AS CustomerCount\nFROM\n    Customer\nGROUP BY\n    COALESCE(Country, 'Unknown')\nORDER BY\n    Country;\n```\n\nThis query counts how many customers reside in each country (treating `NULL` as \u201cUnknown\u201d) and orders the results alphabetically by country.",
+      "error": "Error executing query: near \"*\": syntax error",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 2115.1528358459473,
+        "ttft_ms": 578.7158012390137,
+        "tokens_per_sec": 119.11,
+        "total_tokens_per_sec": 230.24,
+        "cost": 3.409e-05,
+        "prompt_tokens": 304,
+        "completion_tokens": 183,
+        "total_tokens": 487
+      }
+    },
+    {
+      "question": "Which employee has the most customers assigned to them?",
+      "status": "wrong_results",
+      "generated_sql": "-- Which employee has the most customers assigned to them?\n\nSELECT\n    e.EmployeeId,\n    e.FirstName,\n    e.LastName,\n    COUNT(c.CustomerId) AS CustomerCount\nFROM\n    Employee e\nLEFT JOIN\n    Customer c\n    ON c.SupportRepId = e.EmployeeId\nGROUP BY\n    e.EmployeeId,\n    e.FirstName,\n    e.LastName\nORDER BY\n    CustomerCount DESC\nLIMIT 1;   -- use TOP 1 WITH TIES if you want to include ties",
+      "expected": [
+        {
+          "EmployeeName": "Jane Peacock",
+          "CustomerCount": 21
+        }
+      ],
+      "actual": [
+        {
+          "EmployeeId": 3,
+          "FirstName": "Jane",
+          "LastName": "Peacock",
+          "CustomerCount": 21
+        }
+      ],
+      "score": 0.3525,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.0525,
+        "total_score": 0.3525,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 0,
+          "total_expected_rows": 1,
+          "column_match_ratio": 0.5,
+          "order_matters": true
+        }
+      },
+      "metrics": {
+        "latency_ms": 2790.6250953674316,
+        "ttft_ms": 1793.226957321167,
+        "tokens_per_sec": 288.75,
+        "total_tokens_per_sec": 212.86,
+        "cost": 4.1580000000000005e-05,
+        "prompt_tokens": 306,
+        "completion_tokens": 288,
+        "total_tokens": 594
+      }
+    },
+    {
+      "question": "What is the average invoice total for each country?",
+      "status": "wrong_results",
+      "generated_sql": "-- Average invoice total per country\nSELECT\n    BillingCountry,\n    AVG(Total) AS AvgInvoiceTotal\nFROM\n    Invoice\nGROUP BY\n    BillingCountry\nORDER BY\n    AvgInvoiceTotal DESC;   -- optional: order by average total",
+      "expected": [
+        {
+          "BillingCountry": "Chile",
+          "AverageInvoiceTotal": 6.659999999999999
+        },
+        {
+          "BillingCountry": "Ireland",
+          "AverageInvoiceTotal": 6.517142857142857
+        },
+        {
+          "BillingCountry": "Hungary",
+          "AverageInvoiceTotal": 6.517142857142857
+        }
+      ],
+      "actual": [
+        {
+          "BillingCountry": "Chile",
+          "AvgInvoiceTotal": 6.659999999999999
+        },
+        {
+          "BillingCountry": "Ireland",
+          "AvgInvoiceTotal": 6.517142857142857
+        },
+        {
+          "BillingCountry": "Hungary",
+          "AvgInvoiceTotal": 6.517142857142857
+        }
+      ],
+      "score": 0.3525,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.0525,
+        "total_score": 0.3525,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 0,
+          "total_expected_rows": 24,
+          "column_match_ratio": 0.5,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 2385.0207328796387,
+        "ttft_ms": 1590.975046157837,
+        "tokens_per_sec": 270.77,
+        "total_tokens_per_sec": 218.45,
+        "cost": 3.647e-05,
+        "prompt_tokens": 306,
+        "completion_tokens": 215,
+        "total_tokens": 521
+      }
+    },
+    {
+      "question": "List all albums by the artist 'AC/DC'",
+      "status": "wrong_results",
+      "generated_sql": "-- List all albums by the artist 'AC/DC'\nSELECT\n    a.AlbumId,\n    a.Title\nFROM\n    Album AS a\nJOIN\n    Artist AS ar\n    ON a.ArtistId = ar.ArtistId\nWHERE\n    ar.Name = 'AC/DC'\nORDER BY\n    a.Title;",
+      "expected": [
+        {
+          "Title": "For Those About To Rock We Salute You"
+        },
+        {
+          "Title": "Let There Be Rock"
+        }
+      ],
+      "actual": [
+        {
+          "AlbumId": 1,
+          "Title": "For Those About To Rock We Salute You"
+        },
+        {
+          "AlbumId": 4,
+          "Title": "Let There Be Rock"
+        }
+      ],
+      "score": 0.40499999999999997,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.105,
+        "total_score": 0.40499999999999997,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 0,
+          "total_expected_rows": 2,
+          "column_match_ratio": 1.0,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 2367.8510189056396,
+        "ttft_ms": 1410.0139141082764,
+        "tokens_per_sec": 212.98,
+        "total_tokens_per_sec": 215.39,
+        "cost": 3.57e-05,
+        "prompt_tokens": 306,
+        "completion_tokens": 204,
+        "total_tokens": 510
+      }
+    },
+    {
+      "question": "What are the names and email addresses of customers from Brazil?",
+      "status": "wrong_results",
+      "generated_sql": "-- Names and email addresses of customers whose country is Brazil\nSELECT\n    CONCAT(FirstName, ' ', LastName) AS Name,\n    Email\nFROM\n    Customer\nWHERE\n    Country = 'Brazil';",
+      "expected": [
+        {
+          "FirstName": "Lu\u00eds",
+          "LastName": "Gon\u00e7alves",
+          "Email": "luisg@embraer.com.br"
+        },
+        {
+          "FirstName": "Eduardo",
+          "LastName": "Martins",
+          "Email": "eduardo@woodstock.com.br"
+        },
+        {
+          "FirstName": "Alexandre",
+          "LastName": "Rocha",
+          "Email": "alero@uol.com.br"
+        }
+      ],
+      "actual": [
+        {
+          "Name": "Lu\u00eds Gon\u00e7alves",
+          "Email": "luisg@embraer.com.br"
+        },
+        {
+          "Name": "Eduardo Martins",
+          "Email": "eduardo@woodstock.com.br"
+        },
+        {
+          "Name": "Alexandre Rocha",
+          "Email": "alero@uol.com.br"
+        }
+      ],
+      "score": 0.33499999999999996,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.034999999999999996,
+        "total_score": 0.33499999999999996,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 0,
+          "total_expected_rows": 5,
+          "column_match_ratio": 0.3333333333333333,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 1810.716152191162,
+        "ttft_ms": 1435.0790977478027,
+        "tokens_per_sec": 481.85,
+        "total_tokens_per_sec": 270.06,
+        "cost": 3.423e-05,
+        "prompt_tokens": 308,
+        "completion_tokens": 181,
+        "total_tokens": 489
+      }
+    },
+    {
+      "question": "How many tracks are there in each playlist?",
+      "status": "syntax_error",
+      "generated_sql": "**SQL Query**\n\n```sql\nSELECT\n    p.PlaylistId,\n    p.Name,\n    COUNT(pt.TrackId) AS TrackCount\nFROM\n    Playlist AS p\nLEFT JOIN\n    PlaylistTrack AS pt\n    ON p.PlaylistId = pt.PlaylistId\nGROUP BY\n    p.PlaylistId,\n    p.Name\nORDER BY\n    p.PlaylistId;\n```\n\n**Explanation**\n\n- `Playlist` holds the playlists.\n- `PlaylistTrack` links each playlist to the tracks it contains.\n- A `LEFT JOIN` ensures playlists with no tracks still appear (count = 0).\n- `COUNT(pt.TrackId)` tallies the number of tracks per playlist.\n- Grouping by `PlaylistId` (and `Name` for readability) gives the count for each playlist.",
+      "error": "Error executing query: near \"*\": syntax error",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 2565.4008388519287,
+        "ttft_ms": 1692.3670768737793,
+        "tokens_per_sec": 320.72,
+        "total_tokens_per_sec": 228.03,
+        "cost": 4.0950000000000006e-05,
+        "prompt_tokens": 305,
+        "completion_tokens": 280,
+        "total_tokens": 585
+      }
+    },
+    {
+      "question": "What is the total revenue generated in the year 2021?",
+      "status": "syntax_error",
+      "generated_sql": "**SQL Query**\n\n```sql\n-- Total revenue generated in the year 2021\nSELECT\n    SUM(Total) AS TotalRevenue2021\nFROM\n    Invoice\nWHERE\n    YEAR(InvoiceDate) = 2021;   -- or use a date range: BETWEEN '2021-01-01' AND '2021-12-31'\n```\n\nThis query sums the `Total` column from the `Invoice` table for all invoices whose `InvoiceDate` falls within the year 2021.",
+      "error": "Error executing query: near \"*\": syntax error",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 2828.036069869995,
+        "ttft_ms": 1697.5350379943848,
+        "tokens_per_sec": 183.1,
+        "total_tokens_per_sec": 182.46,
+        "cost": 3.612e-05,
+        "prompt_tokens": 309,
+        "completion_tokens": 207,
+        "total_tokens": 516
+      }
+    },
+    {
+      "question": "Which 5 tracks have the longest duration?",
+      "status": "syntax_error",
+      "generated_sql": "**SQL**\n\n```sql\n-- Return the five tracks with the longest duration (in milliseconds)\nSELECT\n    t.TrackId,\n    t.Name,\n    t.Milliseconds\nFROM\n    Track AS t\nORDER BY\n    t.Milliseconds DESC\nLIMIT 5;          -- or TOP 5 for SQL Server\n```\n\n*If you\u2019d like to see the album and artist for each track, you can join the `Album` and `Artist` tables:*\n\n```sql\nSELECT\n    t.TrackId,\n    t.Name,\n    t.Milliseconds,\n    a.Title AS AlbumTitle,\n    ar.Name  AS ArtistName\nFROM\n    Track AS t\n    JOIN Album AS a      ON t.AlbumId = a.AlbumId\n    JOIN Artist AS ar    ON a.ArtistId = ar.ArtistId\nORDER BY\n    t.Milliseconds DESC\nLIMIT 5;\n```\n\nBoth queries list the five tracks with the greatest `Milliseconds` value, i.e., the longest durations.",
+      "error": "Error executing query: near \"*\": syntax error",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 3256.0479640960693,
+        "ttft_ms": 3485.7747554779053,
+        "tokens_per_sec": 110.26,
+        "total_tokens_per_sec": 203.93,
+        "cost": 4.648e-05,
+        "prompt_tokens": 305,
+        "completion_tokens": 359,
+        "total_tokens": 664
+      }
+    },
+    {
+      "question": "What is the most popular media type based on number of tracks?",
+      "status": "syntax_error",
+      "generated_sql": "**SQL Query**\n\n```sql\n-- Most popular media type (by number of tracks)\nSELECT\n    mt.Name,\n    COUNT(t.TrackId) AS TrackCount\nFROM\n    MediaType   AS mt\nJOIN\n    Track       AS t\n      ON mt.MediaTypeId = t.MediaTypeId\nGROUP BY\n    mt.MediaTypeId,\n    mt.Name\nORDER BY\n    TrackCount DESC\nLIMIT 1;          -- use TOP 1 for SQL Server / T\u2011SQL\n```\n\n**Explanation**\n\n1. **Join** `MediaType` with `Track` on `MediaTypeId` to associate each track with its media type.  \n2. **Group** by the media type (`MediaTypeId` and `Name`).  \n3. **Count** the number of tracks per media type.  \n4. **Order** the results in descending order of the count.  \n5. **Limit** to the top row (or `TOP 1` in T\u2011SQL) to get the most popular media type.",
+      "error": "Error executing query: near \"*\": syntax error",
+      "score": 0.0,
+      "score_breakdown": {
+        "syntax_score": 0.0,
+        "result_score": 0.0,
+        "total_score": 0.0,
+        "details": {
+          "syntax_valid": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 3771.6588973999023,
+        "ttft_ms": 1517.841100692749,
+        "tokens_per_sec": 164.17,
+        "total_tokens_per_sec": 180.03,
+        "cost": 4.753e-05,
+        "prompt_tokens": 309,
+        "completion_tokens": 370,
+        "total_tokens": 679
+      }
+    }
+  ]
+}

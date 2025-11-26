@@ -1,0 +1,348 @@
+{
+  "model": "accounts/fireworks/models/llama4-maverick-instruct-basic",
+  "prompt_type": "improved",
+  "total": 10,
+  "correct": 8,
+  "syntax_errors": 0,
+  "wrong_results": 2,
+  "total_score": 9.088055555555556,
+  "average_score": 0.9088055555555556,
+  "metrics": {
+    "total_latency_ms": 7166.298627853394,
+    "average_latency_ms": 716.6298627853394,
+    "total_ttft_ms": 4142.4055099487305,
+    "average_ttft_ms": 414.24055099487305,
+    "total_cost": 0.0023542000000000003,
+    "average_cost_per_query": 0.00023542000000000002,
+    "total_prompt_tokens": 11427,
+    "total_completion_tokens": 344,
+    "total_tokens": 11771,
+    "average_tokens_per_sec": 1772.966,
+    "average_generation_tokens_per_sec": 144.463
+  },
+  "details": [
+    {
+      "question": "What are the top 5 best-selling genres by total sales?",
+      "status": "correct",
+      "generated_sql": "SELECT g.Name, SUM(il.Quantity * il.UnitPrice) as TotalSales \nFROM Genre g \nJOIN Track t ON g.GenreId = t.GenreId \nJOIN InvoiceLine il ON t.TrackId = il.TrackId \nGROUP BY g.Name \nORDER BY TotalSales DESC \nLIMIT 5",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 5,
+          "total_expected_rows": 5,
+          "order_matters": true
+        }
+      },
+      "metrics": {
+        "latency_ms": 896.7649936676025,
+        "ttft_ms": 281.23998641967773,
+        "tokens_per_sec": 102.35,
+        "total_tokens_per_sec": 1347.06,
+        "cost": 0.00024160000000000002,
+        "prompt_tokens": 1145,
+        "completion_tokens": 63,
+        "total_tokens": 1208
+      }
+    },
+    {
+      "question": "How many customers does each country have?",
+      "status": "correct",
+      "generated_sql": "SELECT Country, COUNT(*) as CustomerCount FROM Customer GROUP BY Country ORDER BY CustomerCount DESC",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 24,
+          "total_expected_rows": 24,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 614.0751838684082,
+        "ttft_ms": 890.8329010009766,
+        "tokens_per_sec": 30.94,
+        "total_tokens_per_sec": 1887.39,
+        "cost": 0.00023180000000000002,
+        "prompt_tokens": 1140,
+        "completion_tokens": 19,
+        "total_tokens": 1159
+      }
+    },
+    {
+      "question": "Which employee has the most customers assigned to them?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT e.FirstName, e.LastName, COUNT(c.CustomerId) as CustomerCount \nFROM Employee e \nJOIN Customer c ON e.EmployeeId = c.SupportRepId \nGROUP BY e.EmployeeId, e.FirstName, e.LastName \nORDER BY CustomerCount DESC \nLIMIT 1",
+      "expected": [
+        {
+          "EmployeeName": "Jane Peacock",
+          "CustomerCount": 21
+        }
+      ],
+      "actual": [
+        {
+          "FirstName": "Jane",
+          "LastName": "Peacock",
+          "CustomerCount": 21
+        }
+      ],
+      "score": 0.3525,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.0525,
+        "total_score": 0.3525,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 0,
+          "total_expected_rows": 1,
+          "column_match_ratio": 0.5,
+          "order_matters": true
+        }
+      },
+      "metrics": {
+        "latency_ms": 1114.6841049194336,
+        "ttft_ms": 253.5569667816162,
+        "tokens_per_sec": 69.68,
+        "total_tokens_per_sec": 1078.33,
+        "cost": 0.0002404,
+        "prompt_tokens": 1142,
+        "completion_tokens": 60,
+        "total_tokens": 1202
+      }
+    },
+    {
+      "question": "What is the average invoice total for each country?",
+      "status": "correct",
+      "generated_sql": "SELECT BillingCountry, AVG(Total) as AverageInvoiceTotal FROM Invoice GROUP BY BillingCountry ORDER BY AverageInvoiceTotal DESC",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 24,
+          "total_expected_rows": 24,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 642.6708698272705,
+        "ttft_ms": 410.57896614074707,
+        "tokens_per_sec": 107.72,
+        "total_tokens_per_sec": 1815.86,
+        "cost": 0.0002334,
+        "prompt_tokens": 1142,
+        "completion_tokens": 25,
+        "total_tokens": 1167
+      }
+    },
+    {
+      "question": "List all albums by the artist 'AC/DC'",
+      "status": "correct",
+      "generated_sql": "SELECT al.Title \nFROM Album al \nJOIN Artist ar ON al.ArtistId = ar.ArtistId \nWHERE ar.Name = 'AC/DC'",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 2,
+          "total_expected_rows": 2,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 515.4297351837158,
+        "ttft_ms": 474.0927219390869,
+        "tokens_per_sec": 749.93,
+        "total_tokens_per_sec": 2275.77,
+        "cost": 0.00023459999999999998,
+        "prompt_tokens": 1142,
+        "completion_tokens": 31,
+        "total_tokens": 1173
+      }
+    },
+    {
+      "question": "What are the names and email addresses of customers from Brazil?",
+      "status": "correct",
+      "generated_sql": "SELECT FirstName, LastName, Email FROM Customer WHERE Country = 'Brazil'",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 5,
+          "total_expected_rows": 5,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 725.430965423584,
+        "ttft_ms": 269.6409225463867,
+        "tokens_per_sec": 37.3,
+        "total_tokens_per_sec": 1600.43,
+        "cost": 0.0002322,
+        "prompt_tokens": 1144,
+        "completion_tokens": 17,
+        "total_tokens": 1161
+      }
+    },
+    {
+      "question": "How many tracks are there in each playlist?",
+      "status": "wrong_results",
+      "generated_sql": "SELECT p.Name, COUNT(pt.TrackId) as TrackCount \nFROM Playlist p \nJOIN PlaylistTrack pt ON p.PlaylistId = pt.PlaylistId \nGROUP BY p.Name \nORDER BY TrackCount DESC",
+      "expected": [
+        {
+          "Name": "Music",
+          "TrackCount": 3290
+        },
+        {
+          "Name": "Music",
+          "TrackCount": 3290
+        },
+        {
+          "Name": "90\u2019s Music",
+          "TrackCount": 1477
+        }
+      ],
+      "actual": [
+        {
+          "Name": "Music",
+          "TrackCount": 6580
+        },
+        {
+          "Name": "90\u2019s Music",
+          "TrackCount": 1477
+        },
+        {
+          "Name": "TV Shows",
+          "TrackCount": 426
+        }
+      ],
+      "score": 0.7355555555555555,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.43555555555555553,
+        "total_score": 0.7355555555555555,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": false,
+          "matching_rows": 10,
+          "total_expected_rows": 18,
+          "column_match_ratio": 1.0,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 783.0820083618164,
+        "ttft_ms": 291.5959358215332,
+        "tokens_per_sec": 87.49,
+        "total_tokens_per_sec": 1511.97,
+        "cost": 0.0002368,
+        "prompt_tokens": 1141,
+        "completion_tokens": 43,
+        "total_tokens": 1184
+      }
+    },
+    {
+      "question": "What is the total revenue generated in the year 2021?",
+      "status": "correct",
+      "generated_sql": "SELECT SUM(Total) as TotalRevenue FROM Invoice WHERE strftime('%Y', InvoiceDate) = '2021'",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 1,
+          "total_expected_rows": 1,
+          "order_matters": false
+        }
+      },
+      "metrics": {
+        "latency_ms": 731.4629554748535,
+        "ttft_ms": 247.25699424743652,
+        "tokens_per_sec": 51.63,
+        "total_tokens_per_sec": 1599.53,
+        "cost": 0.00023400000000000002,
+        "prompt_tokens": 1145,
+        "completion_tokens": 25,
+        "total_tokens": 1170
+      }
+    },
+    {
+      "question": "Which 5 tracks have the longest duration?",
+      "status": "correct",
+      "generated_sql": "SELECT Name, Milliseconds FROM Track ORDER BY Milliseconds DESC LIMIT 5",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 5,
+          "total_expected_rows": 5,
+          "order_matters": true
+        }
+      },
+      "metrics": {
+        "latency_ms": 378.16905975341797,
+        "ttft_ms": 534.6260070800781,
+        "tokens_per_sec": 37.02,
+        "total_tokens_per_sec": 3054.19,
+        "cost": 0.00023100000000000003,
+        "prompt_tokens": 1141,
+        "completion_tokens": 14,
+        "total_tokens": 1155
+      }
+    },
+    {
+      "question": "What is the most popular media type based on number of tracks?",
+      "status": "correct",
+      "generated_sql": "SELECT mt.Name, COUNT(t.TrackId) as TrackCount \nFROM MediaType mt \nJOIN Track t ON mt.MediaTypeId = t.MediaTypeId \nGROUP BY mt.Name \nORDER BY TrackCount DESC \nLIMIT 1",
+      "score": 1.0,
+      "score_breakdown": {
+        "syntax_score": 0.3,
+        "result_score": 0.7,
+        "total_score": 1.0,
+        "details": {
+          "syntax_valid": true,
+          "exact_match": true,
+          "matching_rows": 1,
+          "total_expected_rows": 1,
+          "order_matters": true
+        }
+      },
+      "metrics": {
+        "latency_ms": 764.528751373291,
+        "ttft_ms": 488.9841079711914,
+        "tokens_per_sec": 170.57,
+        "total_tokens_per_sec": 1559.13,
+        "cost": 0.00023840000000000002,
+        "prompt_tokens": 1145,
+        "completion_tokens": 47,
+        "total_tokens": 1192
+      }
+    }
+  ]
+}
